@@ -1,5 +1,5 @@
 {
-  "name": "roxes",
+  "name": "remix-chat",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -11,14 +11,21 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@fontsource-variable/noto-sans-tc": "^5.0.5",
     "@nextui-org/react": "^2.2.10",
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",
     "@remix-run/serve": "^2.8.1",
+    "@supabase/auth-helpers-remix": "^0.3.0",
+    "@supabase/ssr": "^0.1.0",
+    "@supabase/supabase-js": "^2.39.8",
+    "@tabler/icons-react": "^3.1.0",
+    "clsx": "^2.1.0",
     "framer-motion": "^11.0.14",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^2.2.2"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.8.1",
