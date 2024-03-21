@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { json, useLoaderData } from "@remix-run/react";
+import { json, redirect, useLoaderData } from "@remix-run/react";
 import { Chat } from "~/components/chat";
 import CreateMessage from "~/components/create-message";
 import Header from "~/components/header";
@@ -14,16 +14,17 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 
   const { message } = Object.fromEntries(await request.formData());
 
-  if (String(message).length === 0) {
+  if ((message as string).length === 0) {
+    console.log("No message");
     return json(null, { headers: response.headers });
   }
 
-  try {
-    supabase
-      .from("messages")
-      .insert({ content: String(message), conversation_id: conversationId });
-  } catch (error) {
-    console.error(error);
+  const result = await supabase
+    .from("messages")
+    .insert({ content: String(message), conversation_id: conversationId });
+
+  if (result.error) {
+    return redirect("/error", { headers: response.headers });
   }
 
   return json(null, { headers: response.headers });

@@ -1,33 +1,33 @@
 import { Button, Input } from "@nextui-org/react";
-import { Form } from "@remix-run/react";
+import { Form, useSubmit } from "@remix-run/react";
 import { IconSend } from "@tabler/icons-react";
-import { useState } from "react";
 
 export default function CreateMessage() {
-  const [input, setInput] = useState("");
+  const submit = useSubmit();
 
   return (
     <div className="sticky bottom-0 mx-auto w-full max-w-screen-lg">
-      <Form method="post" className="flex gap-3 bg-background p-3">
+      <Form
+        onSubmit={(e) => {
+          submit(e.currentTarget);
+          e.currentTarget.reset();
+        }}
+        method="post"
+        className="flex gap-3 bg-background p-3"
+      >
         <Input
+          inputMode="text"
           isClearable
           classNames={{
             inputWrapper: "h-unit-12",
           }}
-          placeholder="Type a message..."
           name="message"
-          minLength={1}
+          type="text"
+          minLength={2}
+          placeholder="Type a message..."
           required
-          onChange={(e) => setInput(e.target.value)}
-          value={input}
         />
-        <Button
-          disabled={input.length === 0}
-          type="submit"
-          isIconOnly
-          size="lg"
-          color="primary"
-        >
+        <Button type="submit" isIconOnly size="lg" color="primary">
           <IconSend />
         </Button>
       </Form>
