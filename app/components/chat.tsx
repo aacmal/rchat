@@ -1,4 +1,4 @@
-import { useOutletContext } from "@remix-run/react";
+import { useOutletContext, useParams } from "@remix-run/react";
 import { useCallback, useEffect, useState } from "react";
 import type { Message, OutletContext } from "~/types";
 
@@ -11,6 +11,7 @@ interface ChatProps {
 export const Chat = ({ messages: serverMessages }: ChatProps) => {
   const [messages, setMessages] = useState(serverMessages);
   const { supabase } = useOutletContext<OutletContext>();
+  const params = useParams();
 
   const scrollToEnd = useCallback(() => {
     // disable the scroll if the user has scrolled up
@@ -33,7 +34,12 @@ export const Chat = ({ messages: serverMessages }: ChatProps) => {
       .channel("*")
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "messages" },
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+          filter: `conversation_id=eq.${params.id}`,
+        },
         (payload) => {
           const newMessage = payload.new as Message;
           if (!messages.find((message) => message.id === newMessage.id)) {

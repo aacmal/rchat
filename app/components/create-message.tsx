@@ -16,6 +16,8 @@ export default function CreateMessage() {
         className="flex gap-3 bg-background pb-3 pt-3"
       >
         <Input
+          // eslint-disable-next-line jsx-a11y/no-autofocus
+          autoFocus
           inputMode="text"
           isClearable
           classNames={{
@@ -25,9 +27,22 @@ export default function CreateMessage() {
           type="text"
           minLength={2}
           placeholder="Type a message..."
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              submit(e.currentTarget.form);
+              e.currentTarget.form.reset();
+            }
+          }}
           required
         />
-        <Button type="submit" isIconOnly size="lg" color="primary">
+        <Button
+          tabIndex={-1}
+          type="submit"
+          isIconOnly
+          size="lg"
+          color="primary"
+        >
           <IconSend />
         </Button>
       </Form>
