@@ -1,25 +1,10 @@
 import { Button, Input } from "@nextui-org/react";
 import { Form } from "@remix-run/react";
 import { IconSend } from "@tabler/icons-react";
-import { useEffect, useRef } from "react";
+import { useState } from "react";
 
 export default function CreateMessage() {
-  const formRef = useRef<HTMLFormElement>();
-
-  useEffect(() => {
-    const form = formRef.current;
-
-    function reset(event: SubmitEvent) {
-      event.preventDefault();
-      formRef.current?.reset();
-    }
-
-    form?.addEventListener("submit", reset);
-
-    return () => {
-      form?.removeEventListener("submit", reset);
-    };
-  }, []);
+  const [input, setInput] = useState("");
 
   return (
     <div className="sticky bottom-0 mx-auto w-full max-w-screen-lg">
@@ -31,9 +16,18 @@ export default function CreateMessage() {
           }}
           placeholder="Type a message..."
           name="message"
-          min={1}
+          minLength={1}
+          required
+          onChange={(e) => setInput(e.target.value)}
+          value={input}
         />
-        <Button type="submit" isIconOnly size="lg" color="primary">
+        <Button
+          disabled={input.length === 0}
+          type="submit"
+          isIconOnly
+          size="lg"
+          color="primary"
+        >
           <IconSend />
         </Button>
       </Form>

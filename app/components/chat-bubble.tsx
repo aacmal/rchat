@@ -9,21 +9,21 @@ interface ChatBubbleProps {
 export const ChatBubble = ({ message }: ChatBubbleProps) => {
   const { session } = useOutletContext<OutletContext>();
 
-  const isMine = session.user.id === message.user_id;
+  const isCurrentUser = session.user.id === message.sender;
 
   return (
     <div
-      className={cn("flex", {
-        "justify-end": isMine,
+      className={cn("flex w-full", {
+        "justify-end": isCurrentUser,
       })}
     >
       <div
         className={cn(
-          "max-w-2/3 rounded-full p-3",
+          "max-w-2/3 rounded-full p-3 font-medium",
           {
-            "bg-default-50": !isMine,
+            "bg-default-50": !isCurrentUser,
             "bg-gradient-to-b from-primary-400 to-primary-500 text-foreground-50":
-              isMine,
+              isCurrentUser,
           },
           "text-sm",
         )}

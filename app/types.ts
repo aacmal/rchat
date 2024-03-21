@@ -8,6 +8,16 @@ export type OutletContext = {
 export interface Message {
   id: number;
   content: string;
-  user_id: string;
+  sender: string;
   created_at: string;
+}
+
+export interface Conversation {
+  id: string;
+  profiles: {
+    id: string;
+    photo_url: string;
+    full_name: string;
+    email: string;
+  }[];
 }

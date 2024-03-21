@@ -1,4 +1,5 @@
 import { Button } from "@nextui-org/react";
+import { IconBrandGoogle } from "@tabler/icons-react";
 import type { OutletContext } from "~/types";
 
 export const Login = ({
@@ -13,9 +14,10 @@ export const Login = ({
   };
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <Button color="primary" size="lg" onClick={handleLogin}>
-        Login
+    <div className="rounded-xl p-7 shadow-2xl shadow-primary-500/30">
+      <Button color="primary" size="lg" onPress={handleLogin}>
+        <IconBrandGoogle />
+        Login with Google
       </Button>
     </div>
   );

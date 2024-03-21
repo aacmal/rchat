@@ -13,8 +13,6 @@ export const Chat = ({ messages: serverMessages }: ChatProps) => {
   const { supabase } = useOutletContext<OutletContext>();
 
   const scrollToEnd = useCallback(() => {
-    console.log("prepare to scroll");
-
     // disable the scroll if the user has scrolled up
     setTimeout(() => {
       if (
@@ -58,7 +56,7 @@ export const Chat = ({ messages: serverMessages }: ChatProps) => {
   }, []);
 
   return (
-    <div className="mx-auto flex w-full max-w-screen-lg flex-1 flex-col justify-end">
+    <div className="mx-auto flex w-full max-w-screen-lg flex-1 flex-col justify-end pt-10">
       <div className="flex flex-1 flex-col items-end gap-3">
         {messages.map((message) => (
           <ChatBubble message={message} key={message.id} />
