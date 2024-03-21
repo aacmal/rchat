@@ -1,18 +1,20 @@
 import { Button } from "@nextui-org/react";
+import { useOutletContext } from "@remix-run/react";
 import { IconBrandGoogle } from "@tabler/icons-react";
 import type { OutletContext } from "~/types";
-import { getURL } from "~/utils/get-url";
 
 export const Login = ({
   supabase,
 }: {
   supabase: OutletContext["supabase"];
 }) => {
+  const { appURL } = useOutletContext<OutletContext>();
+
   const handleLogin = () => {
     supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: getURL(),
+        redirectTo: appURL,
       },
     });
   };
