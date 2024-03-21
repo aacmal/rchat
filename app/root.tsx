@@ -62,7 +62,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  const { env, session } = useLoaderData<typeof loader>();
+  const { env, session, appURL } = useLoaderData<typeof loader>();
   const [supabase] = useState(() =>
     createBrowserClient(env.SUPABASE_URL, env.SUPABASE_KEY),
   );
@@ -87,7 +87,7 @@ export default function App() {
   if (!session) {
     return (
       <div className="grid h-screen w-screen place-items-center">
-        <Login supabase={supabase} />
+        <Login appURL={appURL} supabase={supabase} />
       </div>
     );
   }
