@@ -71,7 +71,7 @@ export default function Index() {
   const { messages, metadata } = useLoaderData<typeof loader>();
 
   return (
-    <div className="relative flex min-h-screen flex-col pr-3">
+    <div className="relative flex min-h-screen flex-col">
       <Header profiles={metadata as Conversation["profiles"]} />
       <Chat messages={messages as Message[]} />
       <CreateMessage />

@@ -27,6 +27,7 @@ export default function Sidebar({ currentSession, data }: Props) {
   const formId = useId();
   const { supabase } = useOutletContext<OutletContext>();
   const [isAdding, setIsAdding] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const addConversation = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
@@ -41,6 +42,12 @@ export default function Sidebar({ currentSession, data }: Props) {
         .select("id")
         .filter("email", "eq", participant2Email)
         .single();
+
+      if (!profileData.data) {
+        setError("User not found");
+        setIsAdding(false);
+        return;
+      }
 
       const participant2Id = profileData.data?.id;
 
@@ -57,7 +64,7 @@ export default function Sidebar({ currentSession, data }: Props) {
   );
 
   return (
-    <aside className="sticky top-0 h-screen w-2/6 max-w-xs p-3">
+    <aside className="sticky top-0 h-screen w-2/6 max-w-xs py-3">
       <div className="h-full w-full rounded-xl border border-default-100 bg-default-50 p-5">
         <Avatar
           src={currentSession.user?.user_metadata.avatar_url}
@@ -88,6 +95,8 @@ export default function Sidebar({ currentSession, data }: Props) {
                         endContent={<IconMail />}
                         placeholder="Enter user email"
                         name="participant2Email"
+                        errorMessage={error}
+                        type="email"
                       />
                       <input
                         name="participant1Id"

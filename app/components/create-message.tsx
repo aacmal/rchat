@@ -13,7 +13,7 @@ export default function CreateMessage() {
           e.currentTarget.reset();
         }}
         method="post"
-        className="flex gap-3 bg-background p-3"
+        className="flex gap-3 bg-background pb-3 pt-3"
       >
         <Input
           inputMode="text"

@@ -35,7 +35,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         profiles (
           id,
           full_name,
-          photo_url
+          photo_url,
+          email
         )
       )
     `,
@@ -60,13 +61,14 @@ export default function MainLayout() {
   const { conversations } = useLoaderData<typeof loader>();
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3 px-3">
       <Sidebar currentSession={session} data={conversations} />
       <div className="flex-1">
         <Outlet
           context={{
             supabase,
             session,
+            conversations,
           }}
         />
       </div>
