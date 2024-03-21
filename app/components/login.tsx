@@ -4,16 +4,14 @@ import type { OutletContext } from "~/types";
 
 export const Login = ({
   supabase,
-  appURL,
 }: {
   supabase: OutletContext["supabase"];
-  appURL: string;
 }) => {
   const handleLogin = () => {
     supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: appURL,
+        redirectTo: "https://rchat.acml.me/",
       },
     });
   };

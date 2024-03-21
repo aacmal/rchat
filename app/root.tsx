@@ -15,7 +15,6 @@ import { useEffect, useState } from "react";
 
 import { Login } from "./components/login";
 import tailwind from "./tailwind.css?url";
-import { getURL } from "./utils/get-url";
 import { createSupabaseServerClient } from "./utils/supabase.server";
 
 export const links: LinksFunction = () => [
@@ -28,8 +27,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     SUPABASE_KEY: process.env.SUPABASE_KEY!,
   };
 
-  const appURL = getURL();
-
   const response = new Response();
 
   const supabase = createSupabaseServerClient({ request, response });
@@ -38,7 +35,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     data: { session },
   } = await supabase.auth.getSession();
 
-  return json({ env, session, appURL }, { headers: response.headers });
+  return json({ env, session }, { headers: response.headers });
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -62,7 +59,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  const { env, session, appURL } = useLoaderData<typeof loader>();
+  const { env, session } = useLoaderData<typeof loader>();
   const [supabase] = useState(() =>
     createBrowserClient(env.SUPABASE_URL, env.SUPABASE_KEY),
   );
@@ -87,7 +84,7 @@ export default function App() {
   if (!session) {
     return (
       <div className="grid h-screen w-screen place-items-center">
-        <Login appURL={appURL} supabase={supabase} />
+        <Login supabase={supabase} />
       </div>
     );
   }
