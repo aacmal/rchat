@@ -4,7 +4,15 @@ import { OutletContext } from "~/types";
 import { cn } from "~/utils/cn";
 
 export default function IndexPage() {
-  const { conversations, session } = useOutletContext<OutletContext>();
+  const { conversations, session, supabase } =
+    useOutletContext<OutletContext>();
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Error logging out:", error.message);
+    }
+  };
 
   return (
     <div className="mx-auto flex max-w-screen-xl flex-col justify-center gap-3 p-3 lg:flex-row">
@@ -16,7 +24,13 @@ export default function IndexPage() {
         />
         <h2 className="font-medium">{session.user.user_metadata.full_name}</h2>
         <p>{session.user.email}</p>
-        <Button color="danger" variant="flat" radius="sm" className="w-full">
+        <Button
+          onPress={handleLogout}
+          color="danger"
+          variant="flat"
+          radius="sm"
+          className="w-full"
+        >
           Log Out
         </Button>
       </div>
