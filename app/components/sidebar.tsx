@@ -11,21 +11,19 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { NavLink, useOutletContext } from "@remix-run/react";
-import { Session } from "@supabase/supabase-js";
 import { IconMail, IconUserPlus } from "@tabler/icons-react";
 import { FormEvent, useCallback, useId, useState } from "react";
 import { Function } from "~/constants/supabase";
-import { Conversation, OutletContext } from "~/types";
+import { OutletContext } from "~/types";
 import { cn } from "~/utils/cn";
 
-interface Props {
-  data: Conversation[];
-  currentSession: Session;
-}
-export default function Sidebar({ currentSession, data }: Props) {
+import MyProfile from "./my-profile";
+
+export default function Sidebar() {
+  const { conversations } = useOutletContext<OutletContext>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const formId = useId();
-  const { supabase } = useOutletContext<OutletContext>();
+  const { supabase, session } = useOutletContext<OutletContext>();
   const [isAdding, setIsAdding] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -64,17 +62,12 @@ export default function Sidebar({ currentSession, data }: Props) {
   );
 
   return (
-    <aside className="sticky top-0 h-screen w-2/6 max-w-xs py-3">
-      <div className="h-full w-full rounded-xl border border-default-100 bg-default-50 p-5">
-        <Avatar
-          src={currentSession.user?.user_metadata.avatar_url}
-          name={currentSession.user.user_metadata.full_name}
-          alt={`Avatar of ${currentSession.user.user_metadata.full_name}`}
-          className="mx-auto"
-        />
+    <aside className="sticky top-0 hidden h-screen w-fit max-w-xs py-3 md:block lg:w-2/6">
+      <div className="flex h-full w-fit flex-col items-center rounded-xl border border-default-100 bg-default-50 p-3 lg:w-full lg:items-stretch lg:p-5">
+        <MyProfile />
         <Divider className="my-6" />
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-lg font-bold">Contacts</h2>
+          <h2 className="hidden text-lg font-bold lg:inline">Chats</h2>
           <Button onPress={onOpen} variant="flat" isIconOnly>
             <IconUserPlus />
           </Button>
@@ -87,7 +80,7 @@ export default function Sidebar({ currentSession, data }: Props) {
               {
                 <>
                   <ModalHeader className="flex flex-col gap-1">
-                    Add new contact
+                    Add new chat
                   </ModalHeader>
                   <ModalBody>
                     <form onSubmit={addConversation} id={formId}>
@@ -101,7 +94,7 @@ export default function Sidebar({ currentSession, data }: Props) {
                       <input
                         name="participant1Id"
                         type="hidden"
-                        value={currentSession.user.id}
+                        value={session.user.id}
                       />
                     </form>
                   </ModalBody>
@@ -122,22 +115,22 @@ export default function Sidebar({ currentSession, data }: Props) {
           </Modal>
         </div>
         <ul className="space-y-3">
-          {data?.length === 0 ? (
+          {conversations?.length === 0 ? (
             <li className="text-sm">You doesn&apos;s have conversation yet</li>
           ) : (
-            data?.map((contact) => {
+            conversations?.map((contact) => {
               // Exclude the current user from the profiles
               const excluded = contact.profiles.filter(
-                (profile) => profile.id !== currentSession.user.id,
+                (profile) => profile.id !== session.user.id,
               );
               if (excluded.length === 1) {
                 return (
                   <li key={excluded[0].id}>
                     <NavLink
-                      to={`/${contact.id}`}
+                      to={`/c/${contact.id}`}
                       className={({ isActive }) =>
                         cn(
-                          "flex items-center gap-3 rounded-lg border border-transparent p-3 transition-colors hover:border-default-200 hover:bg-default-100",
+                          "flex w-fit items-center gap-3 rounded-lg border border-transparent p-3 transition-colors hover:border-default-200 hover:bg-default-100 lg:w-full",
                           {
                             "border-default-200 bg-default-100": isActive,
                           },
@@ -149,7 +142,7 @@ export default function Sidebar({ currentSession, data }: Props) {
                         name={excluded[0].full_name}
                         alt={`Avatar of ${excluded[0].full_name}`}
                       />
-                      <div>
+                      <div className="hidden lg:block">
                         <h3 className="text-sm font-medium">
                           {excluded[0].full_name}
                         </h3>

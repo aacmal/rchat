@@ -12,8 +12,8 @@ import {
 } from "@remix-run/react";
 import { createBrowserClient } from "@supabase/auth-helpers-remix";
 import { useEffect, useState } from "react";
+import { Login } from "~/components/auth/login";
 
-import { Login } from "./components/login";
 import tailwind from "./tailwind.css?url";
 import { createSupabaseServerClient } from "./utils/supabase.server";
 
