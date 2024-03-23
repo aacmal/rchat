@@ -14,11 +14,12 @@ import { createBrowserClient } from "@supabase/auth-helpers-remix";
 import { useEffect, useState } from "react";
 import { Login } from "~/components/auth/login";
 
-import tailwind from "./tailwind.css?url";
+import { Toaster } from "./components/ui/sonner";
+import globalCSS from "./global.css?url";
 import { createSupabaseServerClient } from "./utils/supabase.server";
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: tailwind },
+  { rel: "stylesheet", href: globalCSS },
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -52,6 +53,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {children}
           <ScrollRestoration />
           <Scripts />
+          <Toaster closeButton position="top-center" />
         </NextUIProvider>
       </body>
     </html>

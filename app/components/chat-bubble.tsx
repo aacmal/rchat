@@ -9,7 +9,7 @@ interface ChatBubbleProps {
 export const ChatBubble = ({ message }: ChatBubbleProps) => {
   const { session } = useOutletContext<OutletContext>();
 
-  const isCurrentUser = session.user.id === message.sender;
+  const isCurrentUser = session.user.id === message.sender_id;
 
   return (
     <div

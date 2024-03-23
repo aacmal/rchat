@@ -2,7 +2,10 @@ import { Button, Input } from "@nextui-org/react";
 import { Form, useSubmit } from "@remix-run/react";
 import { IconSend } from "@tabler/icons-react";
 
-export default function CreateMessage() {
+interface Props {
+  recipientId: string;
+}
+export default function CreateMessage({ recipientId }: Props) {
   const submit = useSubmit();
 
   return (
@@ -36,6 +39,7 @@ export default function CreateMessage() {
           }}
           required
         />
+        <input type="hidden" name="recipient_id" defaultValue={recipientId} />
         <Button
           tabIndex={-1}
           type="submit"

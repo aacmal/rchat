@@ -25,7 +25,9 @@
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tailwind-merge": "^2.2.2"
+    "sonner": "^1.4.41",
+    "tailwind-merge": "^2.2.2",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.8.1",

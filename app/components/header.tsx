@@ -23,20 +23,20 @@ export default function Header(props: Props) {
 function PrivateChat({ profiles }: Pick<Props, "profiles">) {
   const { session } = useOutletContext<OutletContext>();
   // exclude the current user
-  const otherProfiles = profiles.filter(
+  const otherProfiles = profiles?.filter(
     (profile) => profile.id !== session.user.id,
   )[0];
 
   return (
     <>
       <h1 className="text-lg font-semibold">
-        Chat With {otherProfiles.full_name}
+        Chat With {otherProfiles?.full_name}
       </h1>
       <Avatar
         isBordered
         size="md"
-        name={otherProfiles.full_name}
-        src={otherProfiles.photo_url}
+        name={otherProfiles?.full_name}
+        src={otherProfiles?.photo_url}
       />
     </>
   );

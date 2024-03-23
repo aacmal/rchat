@@ -9,8 +9,10 @@ export type OutletContext = {
 export interface Message {
   id: number;
   content: string;
-  sender: string;
+  sender_id: string;
+  recipient_id: string;
   created_at: string;
+  conversation_id: string;
 }
 
 export interface Conversation {

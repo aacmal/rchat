@@ -31,7 +31,7 @@ export const Chat = ({ messages: serverMessages }: ChatProps) => {
 
   useEffect(() => {
     const channel = supabase
-      .channel("*")
+      .channel(params.id!)
       .on(
         "postgres_changes",
         {
