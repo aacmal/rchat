@@ -11,7 +11,7 @@ import {
   useRevalidator,
 } from "@remix-run/react";
 import { createBrowserClient } from "@supabase/auth-helpers-remix";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Login } from "~/components/auth/login";
 
 import { Toaster } from "./components/ui/sonner";
@@ -65,6 +65,7 @@ export default function App() {
   const [supabase] = useState(() =>
     createBrowserClient(env.SUPABASE_URL, env.SUPABASE_KEY),
   );
+  const notificationSoundRef = useRef<HTMLAudioElement>(null);
 
   const { revalidate } = useRevalidator();
 
@@ -91,5 +92,13 @@ export default function App() {
     );
   }
 
-  return <Outlet context={{ supabase, session }} />;
+  return (
+    <>
+      <audio hidden ref={notificationSoundRef}>
+        <track kind="captions" />
+        <source src="/sound/new-chat.wav" type="audio/mpeg" />
+      </audio>
+      <Outlet context={{ supabase, session, notificationSoundRef }} />
+    </>
+  );
 }

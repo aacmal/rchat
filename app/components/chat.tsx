@@ -10,7 +10,8 @@ interface ChatProps {
 
 export const Chat = ({ messages: serverMessages }: ChatProps) => {
   const [messages, setMessages] = useState(serverMessages);
-  const { supabase } = useOutletContext<OutletContext>();
+  const { supabase, notificationSoundRef, session } =
+    useOutletContext<OutletContext>();
   const params = useParams();
 
   const scrollToEnd = useCallback(() => {
@@ -45,6 +46,9 @@ export const Chat = ({ messages: serverMessages }: ChatProps) => {
           if (!messages.find((message) => message.id === newMessage.id)) {
             setMessages([...messages, newMessage]);
             scrollToEnd();
+            if (newMessage.sender_id !== session.user.id) {
+              notificationSoundRef.current?.play();
+            }
           }
         },
       )

@@ -1,9 +1,11 @@
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
+import { RefObject } from "react";
 
 export type OutletContext = {
   supabase: SupabaseClient;
   session: Session;
   conversations: Conversation[];
+  notificationSoundRef: RefObject<HTMLAudioElement>;
 };
 
 export interface Message {

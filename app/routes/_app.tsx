@@ -48,7 +48,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function MainLayout() {
-  const { supabase, session } = useOutletContext<OutletContext>();
+  const { supabase, session, notificationSoundRef, ...res } =
+    useOutletContext<OutletContext>();
   const { conversations } = useLoaderData<typeof loader>();
   const params = useParams();
   const navigate = useNavigate();
@@ -67,6 +68,7 @@ export default function MainLayout() {
         (payload) => {
           const newMessage = payload.new as Message;
           if (params.id !== newMessage.conversation_id) {
+            notificationSoundRef.current?.play();
             toast("New messages", {
               description: newMessage.content,
               dismissible: true,
@@ -88,8 +90,10 @@ export default function MainLayout() {
   return (
     <Outlet
       context={{
+        ...res,
         supabase,
         session,
+        notificationSoundRef,
         conversations,
       }}
     />
