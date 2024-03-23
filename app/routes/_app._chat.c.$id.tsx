@@ -54,26 +54,23 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     .from(Table.Messages)
     .select("*")
     .filter("conversation_id", "eq", conversationId)
-    .limit(100);
+    .limit(30);
 
-  return json(
-    {
-      metadata: conversation.data?.profiles,
-      messages: messages.data,
-    },
-    {
-      headers: response.headers,
-    },
-  );
+  return json({
+    metadata: conversation.data?.profiles,
+    messages: messages.data,
+    id: conversationId,
+  });
 };
 
 export default function Index() {
-  const { messages, metadata } = useLoaderData<typeof loader>();
+  const { messages, metadata, id } = useLoaderData<typeof loader>();
 
+  console.log(messages);
   return (
     <div className="relative flex min-h-screen flex-col">
       <Header profiles={metadata as Conversation["profiles"]} />
-      <Chat messages={messages as Message[]} />
+      <Chat key={id} messages={messages as Message[]} />
       <CreateMessage />
     </div>
   );

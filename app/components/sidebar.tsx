@@ -10,7 +10,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-import { NavLink, useOutletContext } from "@remix-run/react";
+import { NavLink, useOutletContext, useRevalidator } from "@remix-run/react";
 import { IconMail, IconUserPlus } from "@tabler/icons-react";
 import { FormEvent, useCallback, useId, useState } from "react";
 import { Function } from "~/constants/supabase";
@@ -22,6 +22,7 @@ import MyProfile from "./my-profile";
 export default function Sidebar() {
   const { conversations } = useOutletContext<OutletContext>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { revalidate } = useRevalidator();
   const formId = useId();
   const { supabase, session } = useOutletContext<OutletContext>();
   const [isAdding, setIsAdding] = useState(false);
@@ -56,8 +57,11 @@ export default function Sidebar() {
         })
         .then(() => {
           setIsAdding(false);
+          revalidate();
+          onOpen();
         });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [supabase],
   );
 
