@@ -54,7 +54,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="og:description" content="Chat with others in real-time" />
         <meta
           name="og:image"
-          content="https://rchat.acml.me/images/rchat-thumbnail.jpg"
+          content="https://rchat.acml.me/rchat-thumbnail.jpg"
         />
         <meta name="og:url" content="https://rchat.acml.me" />
         <meta name="og:type" content="website" />
@@ -68,7 +68,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
         <meta
           name="twitter:image"
-          content="https://rchat.acml.me/images/rchat-thumbnail.jpg"
+          content="https://rchat.acml.me/rchat-thumbnail.jpg"
         />
 
         <meta
