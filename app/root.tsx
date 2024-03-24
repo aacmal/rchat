@@ -44,7 +44,37 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#FFFFFF" />
+        <meta
+          name="description"
+          content="RChat - Chat with others in real-time"
+        />
+        <meta name="author" content="Acml" />
+        <meta name="og:title" content="RChat - Chat with others" />
+        <meta name="og:description" content="Chat with others in real-time" />
+        <meta
+          name="og:image"
+          content="https://rchat.acml.me/images/rchat-thumbnail.jpg"
+        />
+        <meta name="og:url" content="https://rchat.acml.me" />
+        <meta name="og:type" content="website" />
+        <meta name="og:site_name" content="RChat" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:creator" content="@axcamz" />
+        <meta name="twitter:title" content="RChat" />
+        <meta
+          name="twitter:description"
+          content="Chat with others in real-time"
+        />
+        <meta
+          name="twitter:image"
+          content="https://rchat.acml.me/images/rchat-thumbnail.jpg"
+        />
+
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, interactive-widget=resizes-content"
+        />
         <Meta />
         <Links />
       </head>

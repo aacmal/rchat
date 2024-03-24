@@ -1,7 +1,10 @@
 import { Avatar, Button } from "@nextui-org/react";
+import { MetaFunction } from "@remix-run/node";
 import { Link, useOutletContext } from "@remix-run/react";
 import { OutletContext } from "~/types";
 import { cn } from "~/utils/cn";
+
+export const meta: MetaFunction = () => [{ title: "Chats" }];
 
 export default function IndexPage() {
   const { conversations, session, supabase } =
