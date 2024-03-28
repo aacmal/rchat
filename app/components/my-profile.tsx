@@ -8,10 +8,12 @@ import {
 } from "@nextui-org/react";
 import { useOutletContext } from "@remix-run/react";
 import { IconMoon, IconSun } from "@tabler/icons-react";
+import useTheme from "~/hooks/use-theme";
 import { OutletContext } from "~/types";
 
 export default function MyProfile() {
   const { session, supabase } = useOutletContext<OutletContext>();
+  const { theme, setTheme } = useTheme();
 
   const { full_name, avatar_url } = session.user.user_metadata;
 
@@ -40,7 +42,10 @@ export default function MyProfile() {
           <div className="flex items-center justify-between">
             Dark Mode
             <Switch
-              defaultSelected
+              checked={theme === "dark"}
+              onChange={() => {
+                theme === "dark" ? setTheme.light() : setTheme.dark();
+              }}
               size="sm"
               color="success"
               startContent={<IconSun />}

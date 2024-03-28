@@ -7,7 +7,7 @@ interface Props {
   profiles: {
     id: string;
     full_name: string;
-    photo_url: string;
+    avatar_url: string;
   }[];
 }
 export default function Header(props: Props) {
@@ -37,7 +37,7 @@ function PrivateChat({ profiles }: Pick<Props, "profiles">) {
         isBordered
         size="md"
         name={otherProfiles?.full_name}
-        src={otherProfiles?.photo_url}
+        src={otherProfiles?.avatar_url}
       />
     </>
   );

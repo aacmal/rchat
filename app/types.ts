@@ -21,7 +21,7 @@ export interface Conversation {
   id: string;
   profiles: {
     id: string;
-    photo_url: string;
+    avatar_url: string;
     full_name: string;
     email: string;
   }[];

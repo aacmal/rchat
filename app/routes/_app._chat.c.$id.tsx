@@ -52,7 +52,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
         profiles (
           id,
           full_name,
-          photo_url
+          avatar_url
         )
     `,
     )

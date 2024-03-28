@@ -55,7 +55,7 @@ export default function IndexPage() {
                     )}
                   >
                     <Avatar
-                      src={excluded[0].photo_url}
+                      src={excluded[0].avatar_url}
                       name={excluded[0].full_name}
                       alt={`Avatar of ${excluded[0].full_name}`}
                     />

@@ -13,6 +13,6 @@ export default {
       },
     },
   },
-  darkMode: "class",
+  darkMode: "selector",
   plugins: [nextui(), require("tailwindcss-animate")],
 } satisfies Config;
