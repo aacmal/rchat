@@ -34,7 +34,7 @@ export const ChatBubble = ({ message }: ChatBubbleProps) => {
             "w-fit max-w-[70%] rounded-3xl border p-3 font-medium md:max-w-[60%]",
             {
               "border-default-200 bg-default-100": !isCurrentUser,
-              "border-transparent bg-gradient-to-b from-primary-400 to-primary-500 text-foreground-50":
+              " border-transparent bg-gradient-to-b from-primary-400 to-primary-500 text-white":
                 isCurrentUser,
             },
             "text-sm",
