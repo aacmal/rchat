@@ -35,10 +35,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     .filter("id", "eq", session.data.session?.user.id)
     .single();
 
-  console.log(result);
-
   const conversations = result?.data?.conversations ?? [];
 
+  console.log(conversations);
   return json(
     {
       conversations: conversations as Conversation[],

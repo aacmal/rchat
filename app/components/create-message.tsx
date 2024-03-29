@@ -16,7 +16,7 @@ export default function CreateMessage({ recipientId }: Props) {
           e.currentTarget.reset();
         }}
         method="post"
-        className="flex gap-3 bg-background pb-3 pt-3"
+        className="flex gap-3 bg-background pb-3 pt-px"
       >
         <Input
           // eslint-disable-next-line jsx-a11y/no-autofocus

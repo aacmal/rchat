@@ -53,7 +53,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 function MainLayout({ children }: { children: React.ReactNode }) {
   const [theme] = useTheme();
   return (
-    <html lang="en" data-theme={theme}>
+    <html lang="en" data-theme={theme ?? "light"}>
       <head>
         <meta charSet="utf-8" />
         <meta name="theme-color" content="#FFFFFF" />

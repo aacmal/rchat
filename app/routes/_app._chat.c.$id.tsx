@@ -39,6 +39,8 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   return json(null, { headers: response.headers });
 };
 
+export const shouldRevalidate = () => false;
+
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const response = new Response();
   const supabase = createSupabaseServerClient({ request, response });
@@ -60,6 +62,11 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     .single();
 
   if (conversation.error) {
+    return redirect("/not-found", { headers: response.headers });
+  }
+
+  // conversation not found
+  if (conversation.data.profiles.length === 0) {
     return redirect("/not-found", { headers: response.headers });
   }
 
