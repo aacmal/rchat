@@ -1,6 +1,6 @@
 import { Avatar, Button, Divider, useDisclosure } from "@nextui-org/react";
 import { NavLink, useOutletContext } from "@remix-run/react";
-import { IconUserPlus } from "@tabler/icons-react";
+import { IconMessagePlus } from "@tabler/icons-react";
 import { OutletContext } from "~/types";
 import { cn } from "~/utils/cn";
 
@@ -20,7 +20,7 @@ export default function Sidebar() {
         <div className="mb-5 flex items-center justify-between">
           <h2 className="hidden text-lg font-bold lg:inline">Chats</h2>
           <Button onPress={onOpen} variant="flat" isIconOnly>
-            <IconUserPlus />
+            <IconMessagePlus />
           </Button>
           <CreateConversation
             onOpen={onOpen}

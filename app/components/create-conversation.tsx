@@ -67,7 +67,7 @@ export default function CreateConversation({
     [supabase],
   );
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1">Add new chat</ModalHeader>
         <ModalBody>

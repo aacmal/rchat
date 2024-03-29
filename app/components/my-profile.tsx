@@ -32,7 +32,11 @@ export default function MyProfile() {
           className="mx-auto"
         />
       </DropdownTrigger>
-      <DropdownMenu aria-label="Profile Actions" variant="flat">
+      <DropdownMenu
+        aria-label="Profile Actions"
+        variant="solid"
+        color="primary"
+      >
         <DropdownItem key="profile" className="h-14 gap-2">
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{session.user.email}</p>

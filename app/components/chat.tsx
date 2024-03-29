@@ -67,7 +67,7 @@ export const Chat = ({ messages: serverMessages }: ChatProps) => {
 
   return (
     <div className="mx-auto flex w-full max-w-screen-lg flex-1 flex-col justify-end pt-10">
-      <div className="flex flex-1 flex-col items-end gap-3">
+      <div className="flex flex-1 flex-col items-end gap-3 pb-3">
         {messages.map((message) => (
           <ChatBubble message={message} key={message.id} />
         ))}

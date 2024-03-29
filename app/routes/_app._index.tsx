@@ -21,8 +21,13 @@ export default function IndexPage() {
         <p>{session.user.email}</p>
       </div>
       {conversations.length !== 0 ? (
-        <div className="flex h-fit flex-1 flex-col gap-3 rounded-3xl border border-default-200 bg-default-50 p-3 lg:p-5">
-          <h1 className="text-xl font-bold">Chats</h1>
+        <div className="flex h-fit w-full flex-1 flex-col gap-3 rounded-3xl border border-default-200 bg-default-50 p-4 lg:p-5">
+          <div className="flex items-center justify-between">
+            <h1 className="text-xl font-bold">Chats</h1>
+            <Button isIconOnly onPress={onOpen} variant="flat">
+              <IconMessagePlus />
+            </Button>
+          </div>
           <ul className="flex flex-col gap-3">
             {conversations.map((chat) => {
               // Exclude the current user from the profiles
@@ -66,14 +71,14 @@ export default function IndexPage() {
             <Button onPress={onOpen} color="primary">
               Add Conversation
             </Button>
-            <CreateConversation
-              onOpen={onOpen}
-              isOpen={isOpen}
-              onOpenChange={onOpenChange}
-            />
           </div>
         </div>
       )}
+      <CreateConversation
+        onOpen={onOpen}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      />
     </div>
   );
 }
