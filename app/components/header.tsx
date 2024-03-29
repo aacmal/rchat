@@ -29,7 +29,6 @@ function PrivateChat({ profiles }: Pick<Props, "profiles">) {
 
   return (
     <>
-      <title>Chat With {otherProfiles?.full_name}</title>
       <h1 className="text-lg font-semibold">
         Chat With {otherProfiles?.full_name}
       </h1>

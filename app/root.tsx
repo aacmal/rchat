@@ -12,10 +12,16 @@ import {
 } from "@remix-run/react";
 import { createBrowserClient } from "@supabase/auth-helpers-remix";
 import { useEffect, useRef, useState } from "react";
+import {
+  PreventFlashOnWrongTheme,
+  ThemeProvider,
+  useTheme,
+} from "remix-themes";
 import { Login } from "~/components/auth/login";
 
 import { Toaster } from "./components/ui/sonner";
 import globalCSS from "./global.css?url";
+import { themeSessionResolver } from "./session.server";
 import { createSupabaseServerClient } from "./utils/supabase.server";
 
 export const links: LinksFunction = () => [
@@ -28,6 +34,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     SUPABASE_KEY: process.env.SUPABASE_KEY!,
   };
 
+  const { getTheme } = await themeSessionResolver(request);
+
   const response = new Response();
 
   const supabase = createSupabaseServerClient({ request, response });
@@ -36,12 +44,16 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     data: { session },
   } = await supabase.auth.getSession();
 
-  return json({ env, session }, { headers: response.headers });
+  return json(
+    { env, session, theme: getTheme() },
+    { headers: response.headers },
+  );
 };
 
-export function Layout({ children }: { children: React.ReactNode }) {
+function MainLayout({ children }: { children: React.ReactNode }) {
+  const [theme] = useTheme();
   return (
-    <html lang="en">
+    <html lang="en" data-theme={theme}>
       <head>
         <meta charSet="utf-8" />
         <meta name="theme-color" content="#FFFFFF" />
@@ -56,6 +68,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           name="og:image"
           content="https://rchat.acml.me/rchat-thumbnail.jpg"
         />
+        <PreventFlashOnWrongTheme ssrTheme={Boolean(theme)} />
         <meta name="og:url" content="https://rchat.acml.me" />
         <meta name="og:type" content="website" />
         <meta name="og:site_name" content="RChat" />
@@ -87,6 +100,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </NextUIProvider>
       </body>
     </html>
+  );
+}
+
+export function Layout({ children }: { children: React.ReactNode }) {
+  const data = useLoaderData<typeof loader>();
+  return (
+    <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
+      <MainLayout>{children}</MainLayout>
+    </ThemeProvider>
   );
 }
 

@@ -1,5 +1,5 @@
 import { useOutletContext, useParams } from "@remix-run/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import type { Message, OutletContext } from "~/types";
 
 import { ChatBubble } from "./chat-bubble";
@@ -14,7 +14,7 @@ export const Chat = ({ messages: serverMessages }: ChatProps) => {
     useOutletContext<OutletContext>();
   const params = useParams();
 
-  const scrollToEnd = useCallback(() => {
+  const scrollToEnd = useCallback((smooth = true) => {
     // disable the scroll if the user has scrolled up
     setTimeout(() => {
       if (
@@ -24,7 +24,7 @@ export const Chat = ({ messages: serverMessages }: ChatProps) => {
         // workaround for the scroll not working
         window.scrollTo({
           top: window.document.body.scrollHeight + 1000,
-          behavior: "smooth",
+          behavior: smooth ? "smooth" : "auto",
         });
       }
     }, 100);
@@ -60,8 +60,8 @@ export const Chat = ({ messages: serverMessages }: ChatProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages, supabase]);
 
-  useEffect(() => {
-    scrollToEnd();
+  useLayoutEffect(() => {
+    scrollToEnd(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
