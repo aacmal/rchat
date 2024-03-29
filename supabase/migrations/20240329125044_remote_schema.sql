@@ -10,6 +10,8 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+CREATE EXTENSION IF NOT EXISTS "pg_net" WITH SCHEMA "extensions";
+
 CREATE EXTENSION IF NOT EXISTS "pgsodium" WITH SCHEMA "pgsodium";
 
 CREATE EXTENSION IF NOT EXISTS "pg_graphql" WITH SCHEMA "graphql";
@@ -24,7 +26,7 @@ CREATE EXTENSION IF NOT EXISTS "supabase_vault" WITH SCHEMA "vault";
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
 
-CREATE OR REPLACE FUNCTION "public"."create_conversation"("participant1" "uuid", "participant2" "uuid") RETURNS "void"
+CREATE OR REPLACE FUNCTION "public"."create_conversation"("participant1" "uuid", "participant2" "uuid") RETURNS "uuid"
     LANGUAGE "plpgsql"
     AS $$DECLARE
     conversationId uuid;
@@ -47,6 +49,8 @@ BEGIN
 
         INSERT INTO user_to_conversation (conversation_id, user_id)
         VALUES (conversationId, participant2);
+
+        RETURN conversationId;
     END IF;
 END;$$;
 
@@ -108,7 +112,7 @@ ALTER TABLE "public"."profiles" OWNER TO "postgres";
 
 CREATE TABLE IF NOT EXISTS "public"."user_to_conversation" (
     "user_id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "conversation_id" "uuid",
+    "conversation_id" "uuid" NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL
 );
 
@@ -127,7 +131,7 @@ ALTER TABLE ONLY "public"."profiles"
     ADD CONSTRAINT "profiles_username_key" UNIQUE ("username");
 
 ALTER TABLE ONLY "public"."user_to_conversation"
-    ADD CONSTRAINT "user_to_conversation_pkey" PRIMARY KEY ("user_id");
+    ADD CONSTRAINT "user_to_conversation_pkey" PRIMARY KEY ("user_id", "conversation_id");
 
 ALTER TABLE ONLY "public"."profiles"
     ADD CONSTRAINT "profiles_id_fkey" FOREIGN KEY ("id") REFERENCES "auth"."users"("id") ON DELETE CASCADE;
@@ -142,10 +146,10 @@ ALTER TABLE ONLY "public"."messages"
     ADD CONSTRAINT "public_messages_sender_d_fkey" FOREIGN KEY ("sender_id") REFERENCES "auth"."users"("id") ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."user_to_conversation"
-    ADD CONSTRAINT "public_user_to_conversation_conversation_id_fkey" FOREIGN KEY ("conversation_id") REFERENCES "public"."conversations"("id");
+    ADD CONSTRAINT "user_to_conversation_conversation_id_fkey" FOREIGN KEY ("conversation_id") REFERENCES "public"."conversations"("id");
 
 ALTER TABLE ONLY "public"."user_to_conversation"
-    ADD CONSTRAINT "public_user_to_conversation_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."profiles"("id");
+    ADD CONSTRAINT "user_to_conversation_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."profiles"("id");
 
 CREATE POLICY "Enable delete for users based on owner of message" ON "public"."messages" FOR DELETE USING (("auth"."uid"() = "sender_id"));
 
