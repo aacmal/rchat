@@ -46,6 +46,7 @@ export const Chat = ({ messages: serverMessages }: ChatProps) => {
           if (!messages.find((message) => message.id === newMessage.id)) {
             setMessages([...messages, newMessage]);
             scrollToEnd();
+            console.log(newMessage.sender_id !== session.user.id);
             if (newMessage.sender_id !== session.user.id) {
               notificationSoundRef.current?.play();
             }

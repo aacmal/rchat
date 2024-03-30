@@ -105,7 +105,6 @@ function MainLayout({ children }: { children: React.ReactNode }) {
           {children}
           <ScrollRestoration />
           <Scripts />
-          <Toaster closeButton position="top-center" />
         </NextUIProvider>
       </body>
     </html>
@@ -160,6 +159,7 @@ export default function App() {
         <track kind="captions" />
         <source src="/sound/new-chat.wav" type="audio/mpeg" />
       </audio>
+      <Toaster closeButton position="top-center" />
       <Outlet context={{ supabase, session, notificationSoundRef }} />
     </>
   );
