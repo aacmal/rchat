@@ -48,6 +48,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   );
 };
 
+export const shouldRevalidate = () => false;
+
 export default function MainLayout() {
   const { supabase, session, notificationSoundRef, ...res } =
     useOutletContext<OutletContext>();

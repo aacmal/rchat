@@ -50,6 +50,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   );
 };
 
+export const shouldRevalidate = () => false;
+
 function MainLayout({ children }: { children: React.ReactNode }) {
   const [theme] = useTheme();
   return (
