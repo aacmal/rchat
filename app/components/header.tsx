@@ -215,7 +215,7 @@ export default function Header(props: Props) {
           </audio>
           <div className="flex gap-3">
             {/* <Tooltip content="Call"> */}
-            <Button onPress={call.onOpen} isIconOnly>
+            <Button onClick={call.onOpen} isIconOnly>
               <IconPhoneCall />
             </Button>
             {/* </Tooltip> */}
