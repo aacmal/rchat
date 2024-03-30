@@ -6,7 +6,8 @@ import {
   ModalContent,
   ModalHeader,
 } from "@nextui-org/react";
-import { IconPhoneOff } from "@tabler/icons-react";
+import { IconPhoneOff, IconPhonePause } from "@tabler/icons-react";
+import { useState } from "react";
 
 interface Props {
   profiles: {
@@ -17,8 +18,17 @@ interface Props {
   isOpen: boolean;
   onOpen?: () => void;
   onOpenChange: () => void;
+  onClickEndCall: () => void;
+  onClickPause: () => void;
 }
 export default function CallModal({ profiles, ...props }: Props) {
+  const [isPaused, setIsPaused] = useState(false);
+
+  const handlePause = () => {
+    setIsPaused((prev) => !prev);
+    props.onClickPause();
+  };
+
   return (
     <Modal
       hideCloseButton
@@ -30,7 +40,7 @@ export default function CallModal({ profiles, ...props }: Props) {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader>Call {profiles.full_name}</ModalHeader>
+            <ModalHeader>Calling {profiles.full_name}</ModalHeader>
             <ModalBody className="space-y-3 py-5">
               <Avatar
                 src={profiles.avatar_url}
@@ -38,14 +48,26 @@ export default function CallModal({ profiles, ...props }: Props) {
                 size="lg"
                 className="mx-auto"
               />
-              <Button
-                onPress={onClose}
-                className="mx-auto"
-                isIconOnly
-                color="danger"
-              >
-                <IconPhoneOff />
-              </Button>
+              <div className="flex justify-center gap-3">
+                <Button
+                  onPress={() => {
+                    props.onClickEndCall();
+                    onClose();
+                  }}
+                  isIconOnly
+                  color="danger"
+                >
+                  <IconPhoneOff />
+                </Button>
+                <Button
+                  onClick={handlePause}
+                  isIconOnly
+                  color="primary"
+                  variant={isPaused ? "solid" : "flat"}
+                >
+                  <IconPhonePause />
+                </Button>
+              </div>
             </ModalBody>
           </>
         )}

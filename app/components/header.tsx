@@ -1,8 +1,9 @@
+"use client";
+
 import { Button, useDisclosure } from "@nextui-org/react";
 import { useNavigate, useOutletContext, useParams } from "@remix-run/react";
-import { RealtimeChannel } from "@supabase/supabase-js";
 import { IconArrowLeft, IconPhoneCall } from "@tabler/icons-react";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { OutletContext } from "~/types";
 
 import CallModal from "./call-modal";
@@ -26,10 +27,13 @@ export default function Header(props: Props) {
   const navigate = useNavigate();
   const conversationId = useParams().id as string;
   const call = useDisclosure();
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const roomChannel = supabase.channel(`room:${conversationId}`);
+  const peerConnectionRef = useRef<RTCPeerConnection>();
+  const [localMediaStream, setLocalMediaStream] = useState<MediaStream>();
 
   // hanlde voice call
   useEffect(() => {
-    let roomChannel: RealtimeChannel | undefined;
     if (!call.isOpen) {
       if (roomChannel) {
         roomChannel.unsubscribe();
@@ -37,15 +41,22 @@ export default function Header(props: Props) {
       return;
     }
 
-    async function handleCall() {
-      roomChannel = supabase.channel(`room:${conversationId}`);
+    const peerConnection = new RTCPeerConnection({
+      iceServers: [
+        {
+          urls: "stun:stun.l.google.com:19302",
+        },
+      ],
+    });
 
+    peerConnectionRef.current = peerConnection;
+
+    async function handleCall() {
       const micrphone = await navigator.mediaDevices.getUserMedia({
         audio: true,
       });
-      const peerConnection = new RTCPeerConnection({
-        iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-      });
+
+      setLocalMediaStream(micrphone);
 
       function addAudioToPeerConnection() {
         micrphone.getTracks().forEach((track) => {
@@ -144,6 +155,7 @@ export default function Header(props: Props) {
       peerConnection.ontrack = (event) => {
         const receivedStream = event.streams[0];
         console.log("Received remote stream :: ", receivedStream);
+        audioRef.current!.srcObject = receivedStream;
       };
 
       peerConnection.onicecandidate = (event) => {
@@ -158,6 +170,21 @@ export default function Header(props: Props) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [call.isOpen]);
+
+  const handleEndCall = useCallback(() => {
+    peerConnectionRef.current?.close();
+    localMediaStream?.getTracks().forEach((track) => track.stop());
+  }, [localMediaStream]);
+
+  const handleTogglePause = useCallback(() => {
+    if (localMediaStream) {
+      localMediaStream.getTracks().forEach((track) => {
+        if (track.readyState === "live") {
+          track.enabled = !track.enabled;
+        }
+      });
+    }
+  }, [localMediaStream]);
 
   // exclude the current user
   const otherProfiles = useMemo(
@@ -183,6 +210,9 @@ export default function Header(props: Props) {
               Chat With {otherProfiles?.full_name.split(" ")[0]}
             </h1>
           </div>
+          <audio ref={audioRef} autoPlay>
+            <track kind="captions" />
+          </audio>
           <div className="flex gap-3">
             {/* <Tooltip content="Call"> */}
             <Button onPress={call.onOpen} isIconOnly>
@@ -198,6 +228,8 @@ export default function Header(props: Props) {
         </div>
       </header>
       <CallModal
+        onClickPause={handleTogglePause}
+        onClickEndCall={handleEndCall}
         onOpenChange={call.onOpenChange}
         isOpen={call.isOpen}
         profiles={otherProfiles}
