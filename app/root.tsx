@@ -7,6 +7,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  ShouldRevalidateFunctionArgs,
   useLoaderData,
   useRevalidator,
 } from "@remix-run/react";
@@ -50,7 +51,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   );
 };
 
-export const shouldRevalidate = () => false;
+export const shouldRevalidate = ({
+  formAction,
+  defaultShouldRevalidate,
+}: ShouldRevalidateFunctionArgs) => {
+  if (formAction !== undefined) return false;
+  return defaultShouldRevalidate;
+};
 
 function MainLayout({ children }: { children: React.ReactNode }) {
   const [theme] = useTheme();
@@ -133,6 +140,7 @@ export default function App() {
         revalidate();
       }
     });
+    console.log(subscription);
     return () => {
       subscription.unsubscribe();
     };

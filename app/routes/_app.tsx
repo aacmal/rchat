@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import {
   Outlet,
+  ShouldRevalidateFunctionArgs,
   useLoaderData,
   useNavigate,
   useOutletContext,
@@ -48,7 +49,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   );
 };
 
-export const shouldRevalidate = () => false;
+export const shouldRevalidate = ({
+  formAction,
+  defaultShouldRevalidate,
+}: ShouldRevalidateFunctionArgs) => {
+  if (formAction !== undefined) return false;
+  return defaultShouldRevalidate;
+};
 
 export default function MainLayout() {
   const { supabase, session, notificationSoundRef, ...res } =
