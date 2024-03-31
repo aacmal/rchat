@@ -4,6 +4,7 @@ import { Button, useDisclosure } from "@nextui-org/react";
 import { useNavigate, useOutletContext, useParams } from "@remix-run/react";
 import { IconArrowLeft, IconPhoneCall } from "@tabler/icons-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { WEB_RTC_CONFIG } from "~/constants/web-rtc-config";
 import { OutletContext } from "~/types";
 
 import CallModal from "./call-modal";
@@ -41,13 +42,7 @@ export default function Header(props: Props) {
       return;
     }
 
-    const peerConnection = new RTCPeerConnection({
-      iceServers: [
-        {
-          urls: "stun:stun.l.google.com:19302",
-        },
-      ],
-    });
+    const peerConnection = new RTCPeerConnection(WEB_RTC_CONFIG);
 
     peerConnectionRef.current = peerConnection;
 
