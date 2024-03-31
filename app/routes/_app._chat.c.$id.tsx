@@ -1,5 +1,6 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import {
+  ShouldRevalidateFunctionArgs,
   json,
   redirect,
   useLoaderData,
@@ -39,7 +40,13 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   return json(null, { headers: response.headers });
 };
 
-export const shouldRevalidate = () => false;
+export const shouldRevalidate = ({
+  formAction,
+  defaultShouldRevalidate,
+}: ShouldRevalidateFunctionArgs) => {
+  if (formAction !== undefined) return false;
+  return defaultShouldRevalidate;
+};
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const response = new Response();
